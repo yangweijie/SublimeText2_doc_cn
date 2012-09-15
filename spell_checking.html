@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>拼写检查 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>拼写检查</h1>
+		<h3>概述</h3>
+		<p>Sublime Text使用<a href="http://hunspell.sourceforge.net/">Hunspell</a> 作为它的拼写检查器。可替换的字典可以从<a href="http://extensions.services.openoffice.org/en/dictionaries">OpenOffice.org Extension List</a>获取到。
+		<h2>字典</h2>
+		<p>Sublime Text目前只支持UTF-8编码的字典。大多数给问题语言的字典不是用UTF-8编码的而是使用一种更为紧凑的编码。要在Sublime Text中使用一个字典，首先需要把它转成UTF-8。
+		<p>一旦你有了一个用UTF-8编码的字典，他就可以被放到一个包里来安装，举个例子， <span class="file">Packages/User</span>,这个你可以从 <span class="menu">Preferences/Browse Packages</span> 菜单项中浏览到。一旦文件放好了模拟就可以从 <span class="menu">View/Dictionary</span> 菜单的设置中选择字典了。
+		<h2>配置</h2>
+		<p>我们有2个 <a href="settings.html">配置</a> 影响到拼写检查: <span class="setting">spell_check</span>,这控制着拼写检查的启用与否和 <span class="setting">dictionary</span>, 这提供了要使用的字典文件的路径。举个例子:
+		<pre class="code">
+"spell_check": true,
+"dictionary": "Packages/Language - English/en_US.dic"
+		</pre>
+		<h2>命令</h2>
+		<ul>
+			<li><span class="command">next_misspelling</span>: 选择下一个错误拼写
+			<li><span class="command">prev_misspelling</span>: 选择上一个错误拼写
+			<li><span class="command">ignore_word</span>: 添加所选单词通过<span class="command">word</span>参数到ignore list（忽略列表）。
+		</ul>
+	</body>
+</html>

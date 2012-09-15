@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Projects - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>项目</h1>
+		<h3>概述</h3>
+		<p>Sublime Text 2中的项目是由2个文件构成: sublime-project文件， 它包含了项目定义；还有sublime-workspace文件,它包含了用户指定的数据比如打开的文件以及它们的每个修改之处。
+		<p>按照惯例，sublime-project文件会被迁入到版本控制中，而sublime-workspace文件则不会。
+		<h2>项目格式</h2>
+		<p>sublime-project文件是JSON格式，并且有三个顶级对象: <span class="setting">folders</span>,用来包含目录, <span class="setting">settings</span>, 文件配置的复写，和<span class="setting">build_systems</span>，给项目指定编译系统。下面是个例子:
+		<pre class="code">
+{
+    "folders":
+    [
+        {
+            "path": "src",
+            "folder_exclude_patterns": ["backup"]
+        },
+        {
+            "path": "docs",
+            "name": "Documentation",
+            "file_exclude_patterns": ["*.css"]
+        }
+    ],
+    "settings":
+    {
+        "tab_size": 8
+    },
+    "build_systems":
+    [
+        {
+            "name": "List",
+            "cmd": ["ls"]
+        }
+    ]
+}
+		</pre>
+		<h3>目录</h3>
+		<p>每个目录必须有一个path， 并且可选的有一个folder_exclude_patterns和file_exclude_patterns配置。path也许相对于项目目录，或者一个全路径。 目录也许也有一个name配置，用来设置在侧边栏显示的名字。
+		<p>早期版本转换的项目也许会有一个<span class="setting">mount_points</span>入口<span class="setting">在项目目录下</span>。如果你想使用排除匹配模式，你需要将原入口改成上述格式。
+		<h3>配置</h3>
+		<p>这里的<a href="settings.html">Settings</a>可以使用<span class="setting">settings</span>键值指定，并且覆盖普通用户的配置。 注意，他们不能覆盖语法的配置。
+		<h3>编译系统</h3>
+		<p>Build Systems指定了一组<a href="http://sublimetext.info/docs/en/reference/build_systems.html">编译系统</a>定义。为了区别普通编译系统，每个编译系统必须指定一个<span class="setting">name</span>。 这里列出的编译系统将在普通的<span class="menu">Tools/Build Systems</span>菜单上可见。
+	</body>
+</html>

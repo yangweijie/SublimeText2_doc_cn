@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>复古模式 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>复古模式</h1>
+		<h3>概述</h3>
+		<p>复古是一个Sublime Text 2 的vi模式编辑包。它允许你结合vi的命令行模式和Sublime Text的特性，包括多重选择。
+		<p>复古模式在开放开发和补丁方面更受欢迎。如果你想要贡献，详情可见<a href="https://github.com/sublimehq/Vintage">GitHub</a>页。
+		<h2>启用复古模式</h2>
+		<p>复古模式默认是禁用的，通过<span class="setting">ignored_packages</span>配置。 如果你把"Vintage"忽略包列表中移除，你就可以使用vi快捷键编辑了:
+		<ol>
+			<li>选中<span class="Menu">Preferences/Settings - Default</span>菜单项</li>
+			<li>编辑<span class="settings">ignored_packages</span>配置，把他从:</li>
+			<li><pre class="code">
+"ignored_packages": ["Vintage"]
+			</pre>
+			改成:
+			<pre class="code">
+"ignored_packages": []
+			</pre>
+			然后保存文件。
+			<li>现在复古模式就启用了 - 你会看见"INSERT MODE"在任务栏上列出来了。</li>
+		</ol>
+		<p>复古模式默认就是插入模式。这可以通过添加以下来改变:
+		<pre class="code">
+"vintage_start_in_command_mode": true
+		</pre>
+		<p>来使用自己的配置。
+		<h2>它包括了</h2>
+		<p>复古模式包括了最基本的操作： d (delete), y (copy), c (change), gu (lower case), gU (upper case), g~ (swap case), g? (rot13), &lt; (unindent), and &gt; (indent).
+		<p>它也包含了许多动作，包括l, h, j, k, W, w, e, E, b, B, alt+w (move by sub-words), alt+W (move backwards by sub-words), $, ^, %, 0, G, gg, f, F, t, T, ^f, ^b, H, M, and L.
+		<p>文本对象是支持的，包括文字，引号，括号和标签。
+		<p>那里重复的('.')，作为被指定命令和动作的计数。 寄存器就像宏和书签是支持的。许多杂项命令也是被支持的，比如 *, /, n, N, s, S 和其他的。
+		<h2>它没有</h2>
+		<p>插入模式是通常Sublime Text 2编辑,通过通常Sublime Text 2 绑定的键位: vi 插入模式键位没有实现。
+		<p>Ex 命令行 没有实现，除了:w and :e, 其他通过控制面板。
+		<h2>实现的原理</h2>
+		<p>复古模式完全是靠快捷键和插件API实现的 - 随意浏览复古包，看看他们是如何组织的。举个例子，你想绑定"jj"到退出插入模式，你可以添加这个快捷键:
+		<pre class="code">
+{ "keys": ["j", "j"], "command": "exit_insert_mode",
+	"context":
+	[
+		{ "key": "setting.command_mode", "operand": false },
+		{ "key": "setting.is_widget", "operand": false }
+	]
+}
+		</pre>
+		<h2>OS X Lion</h2>
+		<p>在狮子中，按住一个键不会重复作用这个键，而是显示出一个弹出菜单供选择字符间的变化。这不能很好的和命令模式工作，因此你也许想禁用它。只要通过在终端里运行下面这句:
+		<pre class="code">
+defaults write com.sublimetext.2 ApplePressAndHoldEnabled -bool false
+		</pre>
+		<h2>Ctrl键组</h2>
+		<p>复古模式支持这些Ctrl的绑定:
+		<ul>
+			<li><span class="key">Ctrl+[</span>: Escape
+			<li><span class="key">Ctrl+R</span>: Redo
+			<li><span class="key">Ctrl+Y</span>: Scroll down one line
+			<li><span class="key">Ctrl+E</span>: Scroll up one line
+			<li><span class="key">Ctrl+F</span>: Page Down
+			<li><span class="key">Ctrl+B</span>: Page Up
+		</ul>
+		<p>然而，因为他们和其他Sublime Text 2 的快捷键冲突，他们在Windows and Linux上默认是禁用的。他们可以通过设置the vintage_ctrl_keys配置来启用:
+		<pre class="code">
+"vintage_ctrl_keys": true
+		</pre>
+		<h2>Ex Mode</h2>
+		<p>请看一下<a href="https://github.com/SublimeText/VintageEx">VintageEx</a>作为一个复古模式的增强。
+	</body>
+</html>

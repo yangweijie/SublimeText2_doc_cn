@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>缩进配置 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>缩进配置</h1>
+		<h3>概述</h3>
+		<p>缩进配置决定了tab停留的大小并且控制是否tab键应该插入tab还是空格。此外，因为自动检测的缘由，他们可以为全局、每个文件类型或者每个文件设置。
+		<h2>配置</h2>
+		<table class="settings">
+			<tr>
+				<td class="setting">tab_size</td>
+				<td class="description">整数。一个tab和空格相等的数量</td>
+			</tr>
+			<tr>
+				<td class="setting">translate_tabs_to_spaces</td>
+				<td class="description">布尔，如果真，当tab键按下时，空格将会被插入到这个新tab停止的地方，而不是插入一个tab字符</td>
+			</tr>
+			<tr>
+				<td class="setting">detect_indentation</td>
+				<td class="description">布尔，如果真（默认是），当载入一个文件时会自动计算它的tab_size和translate_tabs_to_spaces</td>
+			</tr>
+			<tr>
+				<td class="setting">use_tab_stops</td>
+				<td class="description">布尔，如果translate_tabs_to_spaces为真，use_tab_stops将使tab和backspace的insert/delete提到下一个制表位</td>
+			</tr>
+		</table>
+		<h3>配置文件</h3>
+		<p>配置文件将以一下顺序载入:
+		<ol>
+			<li class="file">Packages/Default/Preferences.sublime-settings
+			<li class="file">Packages/Default/Preferences (&lt;platform&gt;).sublime-settings
+			<li class="file"><strong>Packages/User/Preferences.sublime-settings</strong>
+			<li class="file">Packages/&lt;syntax&gt;/&lt;syntax&gt;.sublime-settings
+			<li class="file"><strong>Packages/User/&lt;syntax&gt;.sublime-settings</strong>
+		</ol>
+		<p>一般来说，你应该把你的配置放入<span class="file">Packages/User/Preferences.sublime-settings</span>。如果你想给某个文件类型指定配置,举个例子，Python，你应该把他们放入<span class="file">Packages/User/Python.sublime-settings</span>.
+		<h3>示列配置文件</h3>
+		<p>试着保存为<span class="file">Packages/User/Preferences.sublime-settings</span>
+		<pre class="code">
+{
+    "tab_size": 4,
+    "translate_tabs_to_spaces": false
+}
+		</pre>
+		<h3>每个语法配置</h3>
+		<p>可以设定一个语法配置。你可以给当前语法设置配置通过编辑<span class="menu">Preferences/Settings - More/Syntax Specific - User</span>菜单下出现的文件。
+		<h2>缩进检测</h2>
+		<p>当一个文件被载入时，它的文档被审查，并且<span class="setting">tab_size</span>和<span class="setting">translate_tabs_to_spaces</span>配置将设给那个文件。当这些发生时状态栏区域将会报告这个结果。尽管这事通常进行的很好，你也许会想禁用它。你可以改<span class="setting">detect_indentation</span>配置实现它。
+		<p>Indentation detection可以手动执行通过<span class="menu">View/Indentation/Guess Settings From Buffer</span>菜单，这个会执行<span class="command">detect_indentation</span>命令。
+		<h2>Tabs和空格之间的转换</h2>
+		<p><span class="menu">View/Indentation</span>有把当前文件中的tabs和空格之间互相转换的命令。这些菜单项将会运行<span class="command">expand_tabs</span>和<span class="command">unexpand_tabs</span>命令。
+		<h2>自动缩进</h2>
+		<p>当你按下回车时自动缩进猜测前导空格的数量来插入到每一新生行。它通过以下配置控制:
+		<table class="settings">
+			<tr>
+				<td class="setting">auto_indent</td>
+				<td class="description">布尔，默认启用。启用自动缩进。</td>
+			</tr>
+			<tr>
+				<td class="setting">smart_indent</td>
+				<td class="description">布尔，默认启用。使自动缩进更智能一点，e.g.在C中声明了if后下一行会自动缩进一次。</td>
+			</tr>
+			<tr>
+				<td class="setting">trim_automatic_white_space</td>
+				<td class="description">布尔，默认启用。当移动插入符移出一行时去除auto_indent生成的白空格。</td>
+			</tr>
+			<tr>
+				<td class="setting">indent_to_bracket</td>
+				<td class="description">布尔，默认禁用。缩进时添加白空格到第一个闭包（bracket翻译不准谷歌翻译成托架了，自己理解吧）单词。使用缩进时会像下面这样：
+					<pre class="code">
+use_indent_to_bracket(to_indent,
+                      like_this);
+					</pre>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

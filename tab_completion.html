@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Tab完成 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>Tab完成</h1>
+		<h3>概述</h3>
+		<p>Tab完成允许通过按tab键快速的完成单词。当启用时按下tab编辑器会使用它的模糊匹配算法展开光标左侧的文本成最佳匹配项。
+		<p>Tab完成默认是启用的。
+		<h2>禁用Tab完成</h2>
+		<p>有时候tab完成不是很需要。要关闭他的话，加入下面这行到<tt>Preferences/File Settings - User</tt>:
+		<pre class="code">
+"tab_completion": false
+		</pre>
+		<h2>插入原生tab</h2>
+		<p>要插入tab而不是补全，按<tt>shift+tab</tt>.
+		<h2>改变完成</h2>
+		<p>有时候完成的文本不是你想要的：要更换他，按<tt>ctrl+space</tt>。这将还原完成，并显示标准的自动完成列表。
+		<p>另外，tab可以再次按下去循环下一个完成。
+		<h2>完成源码</h2>
+		<p>关于完成的源码，和创建自己的完成可以访问<a href="http://sublimetext.info/docs/en/extensibility/completions.html">sublimetext.info</a>.
+	</body>
+</html>

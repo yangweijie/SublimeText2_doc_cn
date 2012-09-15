@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Settings配置 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>配置</h1>
+		<h3>概述</h3>
+		<p>Sublime Text 2有许多配置来定制它的行为。通过修改文件来改变配置：尽管这比用一个GUI图形界面有点小麻烦，但是你被奖励了一个灵活的系统。
+		<h2>配置</h2>
+		<p>想了解哪些配置是可用的，每个配置的说明，请看下这个<span class="file">Packages/Default/Preferences.sublime-settings</span>。你可以通过<span class="menu">Preferences/Settings - Default</span>菜单打开这个文件。
+		<p>当你发现一些配置要更改的时候，把他们加入到你的用户配置里去 (通过<span class="menu">Preferences/Settings - User</span> 菜单可以访问到)，这样在升级时，他们可以被保留下来。 
+		<h3>配置文件</h3>
+		<p>配置文件将以一下顺序载入：
+		<ol>
+			<li class="file">Packages/Default/Preferences.sublime-settings
+			<li class="file">Packages/Default/Preferences (&lt;platform&gt;).sublime-settings
+			<li class="file"><strong>Packages/User/Preferences.sublime-settings</strong>
+			<li class="file">&lt;Project Settings&gt;
+			<li class="file">Packages/&lt;syntax&gt;/&lt;syntax&gt;.sublime-settings
+			<li class="file"><strong>Packages/User/&lt;syntax&gt;.sublime-settings</strong>
+			<li class="file">&lt;Buffer Specific Settings&gt;
+		</ol>
+		<p>总之，你应该把你的配置放到<span class="file">Packages/User/Preferences.sublime-settings</span>中。如果你想指定某种文件类型的配置，比如，Python，你应该把他们放在<span class="file">Packages/User/Python.sublime-settings</span>中。
+		<h3>示列配置文件</h3>
+		<p>试着保存为<span class="file">Packages/User/Preferences.sublime-settings</span>
+		<pre class="code">
+{
+    "tab_size": 4,
+    "translate_tabs_to_spaces": false
+}
+		</pre>
+		<h3>每个语法配置</h3>
+		<p>配置也许会为每个语法去指定。通常这样的用户想要给每个文件类型不同的缩进或者语法高亮颜色。</p>
+		<p>你可以给当前语法编辑这些配置通过<span class="menu">Preferences/Settings - More/Syntax Specific - User</span>菜单。
+		<h3>每个项目配置</h3>
+		<p>可以设置一个每个项目基础配置，详细参考<a href="projects.html">Project Documentation</a></p>
+		<h3>沉浸模式配置</h3>
+		<p><a href="distraction_free.html">Distraction Free Mode</a>有一个额外的配置文件名称为(<span class="file">Distraction Free.sublime-settings</span>)。你可以设置只有沉浸模式有用的文件配置-通过<span class="menu">Preferences/Settings - More/Distraction Free - User</span>菜单访问到。
+		<h3>通过快捷键改变设置</h3>
+		<p><span class="command">toggle_setting</span>命令可以被用来切换设置。比如，给切换<span class="setting">word_wrap</span>当前文件设置一个快捷键，你可以使用(在<span class="menu">Preferences/Key Bindings - User</span>中的):
+		<pre class="code">
+{
+    "keys": ["alt+w"],
+    "command": "toggle_setting",
+    "args":
+    {
+        "setting": "word_wrap"
+    }
+}
+		</pre>
+		<p><span class="command">set_setting</span>命令可以被用来给某个配置指定一个特殊的值。比如，这个快捷键是当期文件使用Cobalt color scheme语法高亮:
+		<pre class="code">
+{
+    "keys": ["ctrl+k", "ctrl+c"],
+    "command": "set_setting",
+    "args":
+    {
+        "setting": "color_scheme",
+        "value": "Packages/Color Scheme - Default/Cobalt.tmTheme"
+    }
+}
+		</pre>
+		<p>这里修改的配置是缓冲区的配置：他们重载配置文件中的配置，但是只对当前文件起作用。
+		<h3>故障排除</h3>
+		<p>由于有好多处可以设置配置的地方，有时候看到当前文件实际使用的配置很有用。你可以在终端里操作以下来查看设置:
+		<pre class="code">
+view.settings().get('font_face')
+		</pre>
+	</body>
+</html>

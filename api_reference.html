@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>API参考 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+		<style type="text/css">
+			table{padding-top: 1em;width: 100%;}
+			th{background-color: #C3D9FF;}
+			th:first-child{width: 18em;}
+			.functions{border-spacing: 0px 0px;margin-bottom: 2em;}
+			.functions td{border-bottom: solid 1px silver;padding-top: 4px;padding-bottom: 4px;}
+			.mth{font-size: 14px;vertical-align: top;padding-right:  2em;font-weight: bold;}
+			.rtn{font-size: 14px;vertical-align: top;padding-right: 2em;}
+			.dsc{font-size: 14px;padding-top: 4px;padding-bottom: 0px;padding-left: 20px;}
+			.dsc td{font-size: 10pt;border: none;}
+			.dsc td:first-child{width: 150px;}
+		</style>
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>API接口</h1>
+		<h3>Sublime API</h3>
+		<ul>
+			<li><a href="#sublime.View">View</a>
+			<li><a href="#sublime.RegionSet">RegionSet</a>
+			<li><a href="#sublime.Region">Region</a>
+			<li><a href="#sublime.Edit">Edit</a>
+			<li><a href="#sublime.Window">Window</a>
+			<li><a href="#sublime.Settings">Settings</a>
+		</ul>
+		<h3>基础类</h3>
+		<ul>
+			<li><a href="#sublime_plugin.EventListener">EventListener</a>
+			<li><a href="#sublime_plugin.ApplicationCommand">ApplicationCommand</a>
+			<li><a href="#sublime_plugin.WindowCommand">WindowCommand</a>
+			<li><a href="#sublime_plugin.TextCommand">TextCommand</a>
+		</ul>
+		<h2>示例插件</h2>
+		<p>Sublime Text 2有几个自预装的插件，你可以在<tt>Packages/Default</tt>目录中找到它们：
+		<ul>
+			<li><tt>Packages/Default/delete_word.py</tt> 删除光标左侧或右侧的一个单词
+			<li><tt>Packages/Default/duplicate_line.py</tt> 复制当前行
+			<li><tt>Packages/Default/goto_line.py</tt> 提示用户输入，然后更新选区
+			<li><tt>Packages/Default/font.py</tt> 显示如何使用配置
+			<li><tt>Packages/Default/mark.py</tt> 使用add_regions()向行号前的地方加一个图标
+			<li><tt>Packages/Default/trim_trailing_whitespace.py</tt> 修改缓冲区刚好在它保存前
+		</ul>
+	<a name="sublime"></a>
+	<h2>sublime 模型</h2>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">set_timeout(callback, delay)</td><td class="rtn">None</td><td class="dsc">在指定的延迟(以毫秒为单位)后调用回调。相同延迟的回调将会以添加的顺序运行。从多线程调用setTimeout是安全的。</td>
+		<tr><td class="mth">status_message(string)</td><td class="rtn">None</td><td class="dsc">设置状态栏出现的信息。</td>
+		<tr><td class="mth">error_message(string)</td><td class="rtn">None</td><td class="dsc">向用户显示错误提示对话框。</td>
+		<tr><td class="mth">message_dialog(string)</td><td class="rtn">None</td><td class="dsc">向用户显示一个消息对话框。</td>
+		<tr><td class="mth">ok_cancel_dialog(string, &lt;ok_button&gt;)</td><td class="rtn">bool</td><td class="dsc">向用户显示一个ok / cancel问题对话框。如果ok_button有值，将作为ok button的文字。如果用户点击ok按钮返回True。</td>
+		<tr><td class="mth">load_settings(base_name)</td><td class="rtn">Settings</td><td class="dsc">载入指定设置。name应当包含一个文件名和扩展名，但是不是一个路径。将会在包目录里搜索匹配base_name的文件，结果将会被整理成settings对象。后面再次调用load_settings用同一个base_name将会返回相同的object，不会再次从硬盘加载配置文件。（未测试是否指的是base_name必须相同）</td>
+		<tr><td class="mth">save_settings(base_name)</td><td class="rtn">None</td><td class="dsc">刷新内存中任何指定配置对象的更改到硬盘。</td>
+		<tr><td class="mth">windows()</td class="rtn"><td class="rtn">[Window]</td><td class="dsc">返回所有打开窗口的列表。</td>
+		<tr><td class="mth">active_window()</td class="rtn"><td class="rtn">Window</td><td class="dsc">返回最近用过的窗口。</td>
+		<tr><td class="mth">packages_path()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回包目录的基本路径。</td>
+		<tr><td class="mth">installed_packages_path()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回所有用的 *.sublime-package 文件所在的包路径。</td>
+		<tr><td class="mth">get_clipboard()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回剪切板的文本。</td>
+		<tr><td class="mth">set_clipboard(string)</td class="rtn"><td class="rtn">None</td><td class="dsc">设置剪切板的文本。</td>
+		<tr><td class="mth">score_selector(scope, selector)</td class="rtn"><td class="rtn">Int</td><td class="dsc">在所给范围内匹配指定选择器，返回一个分数。0分指没有匹配，大于0指匹配到了。同一个作用域将会被不同的选择器匹配比较：分数越高匹配的选择器越好。</td>
+		<tr><td class="mth">run_command(string, &lt;args&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">执行参数中传进来的可选参数的应用命令。</td>
+		<tr><td class="mth">log_commands(flag)</td class="rtn"><td class="rtn">None</td><td class="dsc">控制命令日志。如果启用，所有组合键和菜单调用的命令将会记录到终端。</td>
+		<tr><td class="mth">log_input(flag)</td class="rtn"><td class="rtn">None</td><td class="dsc">控制输入日志。如果启用，所有的键输入将会被记录到终端。</td>
+		<tr><td class="mth">version()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回版本号。</td>
+		<tr><td class="mth">platform()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回系统平台，可能是"osx"，"linux"或者"windows"</td>
+		<tr><td class="mth">arch()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回CPU架构，"x32"或"x64"</td>
+	</table>
+	<a name="sublime.View"></a>
+	<h2>Class sublime.View</h2>
+	代表着一个文本缓冲区的一个视图。注意多个视图也许指向是同一个缓冲区，但是它们有自己唯一的选择区和图形。
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">id()</td><td class="rtn">int</td><td class="dsc">返回一个标识当前view的数字。</td>
+		<tr><td class="mth">buffer_id()</td><td class="rtn">int</td><td class="dsc">返回一个和当前视图相关的缓冲区的唯一标识。</td>
+		<tr><td class="mth">file_name()</td class="rtn"><td class="rtn">String</td><td class="dsc">缓冲区文件的全名，如果硬盘上不存在返回None。</td>
+		<tr><td class="mth">name()</td class="rtn"><td class="rtn">String</td><td class="dsc">分配给缓冲区的名称，如果有的话。</td>
+		<tr><td class="mth">set_name(name)</td class="rtn"><td class="rtn">None</td><td class="dsc">指定给缓冲区一个名称。</td>
+		<tr><td class="mth">is_loading()</td class="rtn"><td class="rtn">bool</td><td class="dsc">如果缓冲区仍然在从硬盘加载，并且没有准备好使用返回true。</td>
+		<tr><td class="mth">is_dirty()</td class="rtn"><td class="rtn">bool</td><td class="dsc">如果有任何未保存的修改过的缓冲区返回true。</td>
+		<tr><td class="mth">is_read_only()</td class="rtn"><td class="rtn">bool</td><td class="dsc">如果缓冲区不能被修改返回true。</td>
+		<tr><td class="mth">set_read_only(value)</td class="rtn"><td class="rtn">None</td><td class="dsc">将缓冲区设为只读。</td>
+		<tr><td class="mth">is_scratch()</td class="rtn"><td class="rtn">bool</td><td class="dsc">如果缓冲区是一个临时缓冲区返回true。临时缓冲区从来不被视为脏的。</td>
+		<tr><td class="mth">set_scratch(value)</td class="rtn"><td class="rtn">None</td><td class="dsc">将缓冲区设为临时缓冲区。</td>
+		<tr><td class="mth">settings()</td class="rtn"><td class="rtn">Settings</td><td class="dsc">返回视图配置对象的引用。任何对此对象的改变将私有的做用于当前视图。</td>
+		<tr><td class="mth">window()</td class="rtn"><td class="rtn">Window</td><td class="dsc">返回包含视图的窗口的引用。</td>
+		<tr><td class="mth">run_command(string, &lt;args&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">运行带可选参数的指定名称的TextCommand。</td>
+		<tr><td class="mth">size()</td><td class="rtn">int</td><td class="dsc">返回文件中的字符个数。</td>
+		<tr><td class="mth">substr(region)</td><td class="rtn">String</td><td class="dsc">该区域的内容作为一个字符串返回。</td>
+		<tr><td class="mth">substr(point)</td><td class="rtn">String</td><td class="dsc">返回光标右侧的字符。</td>
+		<tr><td class="mth">begin_edit(&lt;command&gt;, &lt;args&gt;)</td><td class="rtn">Edit</td><td class="dsc">创建一个编辑对象，划定一个撤销组。必须调用相应的end_edit()。</td>
+		<tr><td class="mth">end_edit(edit)</td><td class="rtn">Edit</td><td class="dsc">完成编辑。</td>
+		<tr><td class="mth">insert(edit, point, string)</td class="rtn"><td class="rtn">int</td><td class="dsc">在视图中指定光标处插入所给字符串。返回插入的字符数：如果当前缓冲区tabs正被转换为空格，结果是不同的。</td>
+		<tr><td class="mth">erase(edit, region)</td><td class="rtn">None</td><td class="dsc">擦除缓冲区区域的文本。</td>
+		<tr><td class="mth">replace(edit, region, string)</td><td class="rtn">None</td><td class="dsc">替换区域的文本为给定字符串。</td>
+		<tr><td class="mth">sel()</td class="rtn"><td class="rtn">RegionSet</td><td class="dsc">返回一个选区的引用。</td>
+		<tr><td class="mth">line(point)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回包含光标的行。</td>
+		<tr><td class="mth">line(region)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回一个修改过的区域的副本，它开始于一行的开始，并结束在一行的结尾，注意它有可能跨几行。</td>
+		<tr><td class="mth">full_line(point)</td class="rtn"><td class="rtn">Region</td><td class="dsc">像line()，但是该选区包含紧跟的换行符，如果有的话。</td>
+		<tr><td class="mth">full_line(region)</td class="rtn"><td class="rtn">Region</td><td class="dsc">像line()，但是该选区包含紧跟的换行符，如果有的话。</td>
+		<tr><td class="mth">lines(region)</td class="rtn"><td class="rtn">[Region]</td><td class="dsc">返回选区相交的（以排好序的）行的列表。</td>
+		<tr><td class="mth">split_by_newlines(region)</td class="rtn"><td class="rtn">[Region]</td><td class="dsc">分割选区至每个选区只返回精确的一行。</td>
+		<tr><td class="mth">word(point)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回包含光标的单词。</td>
+		<tr><td class="mth">word(region)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回一个修改过的区域的副本，它开始于一词的开始，并结束在一词的结尾，注意它有可能跨几个词。</td>
+		<tr><td class="mth">find(pattern, fromPosition, &lt;flags&gt;)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回从所给光标后的第一个匹配正则模式的区域，未找到返回None。可选的flags参数可以是sublime.LITERAL、sublime.IGNORECASE或者2个都有。</td>
+		<tr><td class="mth">find_all(pattern, &lt;flags&gt;, &lt;format&gt;, &lt;extractions&gt;)</td class="rtn"><td class="rtn">[Region]</td><td class="dsc">返回所有匹配正则的非重叠的区域。可选的flags参数可以是sublime.LITERAL、sublime.IGNORECASE或者2个都有。如果提供了一个格式化用的format字符串，那么所有匹配将被格式化，并且放入extractions列表中。</td>
+		<tr><td class="mth">rowcol(point)</td class="rtn"><td class="rtn">(int, int)</td><td class="dsc">基于0点计算光标所在行数和列数。</td>
+		<tr><td class="mth">text_point(row, col)</td class="rtn"><td class="rtn">int</td><td class="dsc">基于0点通过所给的行和列计算字符的偏移。注意，'col'解释为超过一行开头的字符的个数。</td>
+		<tr><td class="mth">set_syntax_file(syntax_file)</td class="rtn"><td class="rtn">None</td><td class="dsc">改变视图使用的语法高亮。<tt>syntax_file</tt> 应该是一个在<tt>Packages/Python/Python.tmLanguage</tt>中的名字。检索当前的语法,使用<tt>view.settings().get('syntax').</tt></td>
+		<tr><td class="mth">extract_scope(point)</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回分配给所给光标处字符的语法的范围。</td>
+		<tr><td class="mth">scope_name(point)</td class="rtn"><td class="rtn">String</td><td class="dsc">返回分配给所给光标处字符的语法的名称。</td>
+		<tr><td class="mth">score_selector(point, selector)</td class="rtn"><td class="rtn">Int</td><td class="dsc">在所给范围内匹配指定选择器，返回一个分数。0分指没有匹配，大于0指匹配到了。同一个作用域将会被不同的选择器匹配比较：分数越高匹配的选择器越好。</td>
+		<tr><td class="mth">find_by_selector(selector)</td class="rtn"><td class="rtn">[Regions]</td><td class="dsc">找到文件中所有匹配选择器的区域，作为一个列表范围他们。</td>
+		<tr><td class="mth">show(point, &lt;show_surrounds&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视图到指定的光标。</td>
+		<tr><td class="mth">show(region, &lt;show_surrounds&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视图到指定的区域。</td>
+		<tr><td class="mth">show(region_set, &lt;show_surrounds&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视图来显示错给区域集。</td>
+		<tr><td class="mth">show_at_center(point)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视图使光标居中。</td>
+		<tr><td class="mth">show_at_center(region)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视图到区域的中心。</td>
+		<tr><td class="mth">visible_region()</td class="rtn"><td class="rtn">Region</td><td class="dsc">返回当前视图可见的区域。</td>
+		<tr><td class="mth">viewport_position()</td class="rtn"><td class="rtn">Vector</td><td class="dsc">返回视口的布局坐标的偏移。</td>
+		<tr><td class="mth">set_viewport_position(vector, &lt;animate&lt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">滚动视口到所给布局坐标。</td>
+		<tr><td class="mth">viewport_extent()</td class="rtn"><td class="rtn">vector</td><td class="dsc">返回视口的宽和高。</td>
+		<tr><td class="mth">layout_extent()</td class="rtn"><td class="rtn">vector</td><td class="dsc">返回布局的宽和高。</td>
+		<tr><td class="mth">text_to_layout(point)</td class="rtn"><td class="rtn">vector</td><td class="dsc">转换一个文本坐标到布局坐标。</td>
+		<tr><td class="mth">layout_to_text(vector)</td class="rtn"><td class="rtn">point</td><td class="dsc">转换一个布局坐标到文本坐标。</td>
+		<tr><td class="mth">line_height()</td class="rtn"><td class="rtn">real</td><td class="dsc">返回布局中使用的行高。</td>
+		<tr><td class="mth">em_width()</td class="rtn"><td class="rtn">real</td><td class="dsc">返回视图中使用的经典字符串的宽度。</td>
+		<tr><td class="mth">add_regions(key, [regions], scope, &lt;icon&gt;, &lt;flags&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">添加一组区域到视图。如果指定的key已存在一组区域了，它们将被覆写。scope用来定位一种在区域内所绘的颜色，它应当是有一种范围的名称,比如"comment"或"string"。如果scope为空，区域不会被绘制。
+				<p>可选参数icon如果指定名称了，将会绘制到相邻每个区域的阴沟。icon将会使用scope相关的颜色。可用的icon值是<tt>dot</tt>, <tt>circle</tt>, <tt>bookmark</tt>和<tt>cross</tt>。
+				<p>可选的标志参数是一个按位组合：
+				<ul>
+					<li><tt>sublime.DRAW_EMPTY</tt>. Draw empty regions with a vertical bar. By default, they aren't drawn at all.
+					<li><tt>sublime.HIDE_ON_MINIMAP</tt>. Don't show the regions on the minimap.
+					<li><tt>sublime.DRAW_EMPTY_AS_OVERWRITE</tt>. Draw empty regions with a horizontal bar instead of a vertical one.
+					<li><tt>sublime.DRAW_OUTLINED</tt>. Draw regions as an outline, rather than filled in.
+					<li><tt>sublime.PERSISTENT</tt>. Save the regions in the session.
+					<li><tt>sublime.HIDDEN</tt>. Don't draw the regions.
+				</ul>
+			</td>
+		<tr><td class="mth">get_regions(key)</td class="rtn"><td class="rtn">[regions]</td><td class="dsc">返回与所给key相关的选区，如果有的话。</td>
+		<tr><td class="mth">erase_regions(key)</td class="rtn"><td class="rtn">None</td><td class="dsc">移除指定的区域。</td>
+		<tr><td class="mth">set_status(key, value)</td class="rtn"><td class="rtn">None</td><td class="dsc">添加状态key到视图。这些值将会被显示在状态栏，组成一个以逗号分割所有值，按照key排序的列表。设置值为空字符串将清楚状态。</td>
+		<tr><td class="mth">get_status(key)</td class="rtn"><td class="rtn">String</td><td class="dsc">返回现在分配给相关key的value，如果有的话。</td>
+		<tr><td class="mth">erase_status(key)</td class="rtn"><td class="rtn">None</td><td class="dsc">清除指定name的状态值。</td>
+		<tr><td class="mth">command_history(index, &lt;modifying_only&gt;)</td class="rtn"><td class="rtn">(String,Dict,int)</td><td class="dsc">返回存在撤销/重做堆栈中的所给历史入口的命令名，命令参数，和重复次数。
+				<p>索引0代表最近使用的命令， -1表示在那之前的命令，等等。正值的索引意味着在重做堆栈中的命令。如果undo / redo 历史不存在，返回(None, None, 0)。
+				<p>设置modifying_only为True(默认False)将会只返回缓冲区内修改过的入口。</td>
+		<tr><td class="mth">fold([regions])</td class="rtn"><td class="rtn">bool</td><td class="dsc">折叠所给的区域们，如果他们都已折叠了返回False</td>
+		<tr><td class="mth">fold(region)</td class="rtn"><td class="rtn">bool</td><td class="dsc">折叠所给区域，如果已闭合返回False。</td>
+		<tr><td class="mth">unfold(region)</td class="rtn"><td class="rtn">[regions]</td><td class="dsc">展开该区域里所有文字，返回展开的区域。</td>
+		<tr><td class="mth">unfold([regions])</td class="rtn"><td class="rtn">[regions]</td><td class="dsc">展开各区域里所有文字，返回展开的区域。</td>
+		<tr><td class="mth">encoding()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回当前文件相关的编码。</td>
+		<tr><td class="mth">set_encoding(encoding)</td class="rtn"><td class="rtn">None</td><td class="dsc">给当前文件指定一个新的编码。这个编码将在下次文件保存时使用。</td>
+		<tr><td class="mth">line_endings()</td class="rtn"><td class="rtn">String</td><td class="dsc">返回当前文件使用的line endings。</td>
+		<tr><td class="mth">set_line_endings(line_endings)</td class="rtn"><td class="rtn">None</td><td class="dsc">设置下次保存时使用的line endings。</td>
+	</table>
+	<a name="sublime.RegionSet"></a>
+	<h2>Class sublime.RegionSet</h2>
+	维持一组区域，确保他们没有重叠。这些区域有序存储。.
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">clear()</td><td class="rtn">None</td><td class="dsc">移除所有区域。</td>
+		<tr><td class="mth">add(region)</td><td class="rtn">None</td><td class="dsc">添加指定区域。它将与集合内任何和它相交的区域合并。</td>
+		<tr><td class="mth">add_all(region_set)</td><td class="rtn">None</td><td class="dsc">添加指定集合内的区域。</td>
+		<tr><td class="mth">subtract(region)</td><td class="rtn">None</td><td class="dsc">从集合中减去该区域。</td>
+		<tr><td class="mth">contains(region)</td><td class="rtn">bool</td><td class="dsc">当且仅当给的区域是集合的子集时返回true</td>
+	</table>
+	<a name="sublime.Region"></a>
+	<h2>Class sublime.Region</h2>
+	代表一个缓冲区的区域。空区域，其中A == B是有效的。
+	<table class="functions">
+		<tr><th>构造方法</th><th>描述</th></tr>
+		<tr><td class="mth">Region(a, b)</td><td class="dsc">用a和b的初始值创建一个区域。</td>
+	</table>
+	<table class="functions">
+		<tr><th>属性</th><th>Type</th><th>描述</th></tr>
+		<tr><td class="mth">a</td><td class="rtn">int</td><td class="dsc">该区域的首端。</td>
+		<tr><td class="mth">b</td><td class="rtn">int</td><td class="dsc">该区域的第二个结束。也许比a小，此时区域是相反的。</td>
+	</table>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">begin()</td><td class="rtn">int</td><td class="dsc">返回a和b中的最小值。</td>
+		<tr><td class="mth">end()</td><td class="rtn">int</td><td class="dsc">返回a和b中的最大值。</td>
+		<tr><td class="mth">size()</td><td class="rtn">int</td><td class="dsc">返回该区域跨域的字符串的个数。总是>= 0.</td>
+		<tr><td class="mth">empty()</td><td class="rtn">bool</td><td class="dsc">当且仅当begin() == end()时返回true.</td>
+		<tr><td class="mth">cover(region)</td><td class="rtn">Region</td><td class="dsc">返回一个跨越当前区域和所给区域的区域。</td>
+		<tr><td class="mth">intersection(region)</td><td class="rtn">Region</td><td class="dsc">返回两个区域的交集。</td>
+		<tr><td class="mth">intersects(region)</td><td class="rtn">bool</td><td class="dsc">当且仅当当前区域和所给区域相等或者两个包含至少一个共同处时返回True。</td>
+		<tr><td class="mth">contains(region)</td><td class="rtn">bool</td><td class="dsc">当且仅当所给区域是当前区域的子集时返回True。</td>
+		<tr><td class="mth">contains(point)</td><td class="rtn">bool</td><td class="dsc">当前仅当begin() &lt;= point &lt;= end()返回True。</td>
+	</table>
+	<a name="sublime.Edit"></a>
+	<h2>Class sublime.Edit</h2>
+	<p>Edit对象没有功能，它们用来分组缓冲区的修改。
+	<p>它们可以通过view.begin_edit()被创建。每次调用view.begin_edit()必须有个相关的view.end_edit()的调用，通常包裹在try ... finally块中。
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">(no methods)</td><td class="rtn"></td><td class="dsc"></td>
+	</table>
+	<a name="sublime.Window"></a>
+	<h2>Class sublime.Window</h2>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">id()</td><td class="rtn">int</td><td class="dsc">返回一个唯一标示窗口的数字。</td>
+		<tr><td class="mth">new_file()</td><td class="rtn">View</td><td class="dsc">创建一个文件。返回的视图是空的，并且它的is_loaded方法将返回True.</td>
+		<tr><td class="mth">open_file(file_name, &lt;flags&gt;)</td><td class="rtn">View</td><td class="dsc">打开指定文件，返回相关的view。如果已经打开了，文件tab将被激活。注意因为文件加载是异步的，对返回的view的操作是不肯能的，直到它的its is_loading()方法返回False。
+				<p>可选的标志参数是一个按位组合：
+				<ul>
+					<li><tt>sublime.ENCODED_POSITION</tt>. Indicates the file_name should be searched for a <tt>:row</tt> or <tt>:row:col</tt> suffix
+					<li><tt>sublime.TRANSIENT</tt>. Open the file as a preview only: it won't have a tab assigned it until modified
+				</ul>
+			</td>
+		<tr><td class="mth">active_view()</td><td class="rtn">View</td><td class="dsc">返回当前编辑的视图。</td>
+		<tr><td class="mth">active_view_in_group(group)</td><td class="rtn">View</td><td class="dsc">返回做给小组中当前编辑的视图。</td>
+		<tr><td class="mth">views()</td><td class="rtn">[View]</td><td class="dsc">返回视窗中所有打开的视图。</td>
+		<tr><td class="mth">views_in_group(group)</td><td class="rtn">[View]</td><td class="dsc">返回指定组内所有的视图。</td>
+		<tr><td class="mth">num_groups()</td><td class="rtn">int</td><td class="dsc">返回视窗内视图组中的视图的个数。</td>
+		<tr><td class="mth">active_group()</td><td class="rtn">int</td><td class="dsc">返回当前选中的组的索引。.</td>
+		<tr><td class="mth">focus_group(group)</td><td class="rtn">None</td><td class="dsc">激活指定组。</td>
+		<tr><td class="mth">focus_view(view)</td><td class="rtn">None</td><td class="dsc">切换到指定视图。</td>
+		<tr><td class="mth">get_view_index(view)</td><td class="rtn">(group, index)</td><td class="dsc">返回的视图组内组和索引。如果没有找到则返回-1。</td>
+		<tr><td class="mth">set_view_index(view, group, index)</td><td class="rtn">None</td><td class="dsc">移动视图到指定视图组并给以索引。</td>
+		<tr><td class="mth">folders()</td><td class="rtn">[String]</td><td class="dsc">返回一个当前打开目录的列表。</td>
+		<tr><td class="mth">run_command(string, &lt;args&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">执行指定的带可选的参数的WindowCommand。</td>
+		<tr><td class="mth">show_quick_panel(items, on_done, &lt;flags&gt;)</td class="rtn"><td class="rtn">None</td><td class="dsc">显示一个快速面板，用来选择列表中的一个项目。当选中时，on_done会被调用一次，参数时选中的项目的索引。如果快捷面板取消了，on_done将会被调用，参数为-1。
+				<p>项目也许是一个字符串数组，或者是一个每维是个字符串数组的多维数组。在后一种情况下，快速面板中的每个条目将显示多行。
+				<p>Flags目前只有一个选项，<tt>sublime.MONOSPACE_FONT</tt></td>
+		<tr><td class="mth">show_input_panel(caption, initial_text, on_done, on_change, on_cancel)</td class="rtn"><td class="rtn">View</td><td class="dsc">显示输入面板，收集来自用户的一行输入。on_done和on_change,如果有的话，应当是一个接收一个字符串为参数的函数。on_cancel应当是没有参数的函数。返回用于输入组件的视图。</td>
+		<tr><td class="mth">get_output_panel(name)</td class="rtn"><td class="rtn">View</td><td class="dsc">返回带指定name的输出面板的视图，如果需要的话会创建面板。输出面板可通过执行<tt>show_panel</tt>window命令来显示,其<tt>panel</tt>参数是name加上"output."前缀。
+	</table>
+	<a name="sublime.Settings"></a>
+	<h2>Class sublime.Settings</h2>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">get(name)</td><td class="rtn">value</td><td class="dsc">返回指定名称的配置值。</td>
+		<tr><td class="mth">get(name, default)</td><td class="rtn">value</td><td class="dsc">返回指定名称的配置值，如果没定义返回所传默认值。</td>
+		<tr><td class="mth">set(name, value)</td><td class="rtn">None</td><td class="dsc">设置指定name配置的值。配置的值只允许原始类型、列表和字典这几种类型。</td>
+		<tr><td class="mth">erase(name)</td><td class="rtn">None</td><td class="dsc">删除指定名称的配置。不会移除上一级的同名配置。</td>
+		<tr><td class="mth">has(name)</td><td class="rtn">bool</td><td class="dsc">当且仅当指定名称的配置项存在配置集合或者父级配置中时返回true。</td>
+		<tr><td class="mth">add_on_change(key, on_change)</td><td class="rtn">None</td><td class="dsc">注册一个回调函数当无论什么时候配置对象中的配置值变化时都会执行。</td>
+		<tr><td class="mth">clear_on_change(key)</td><td class="rtn">None</td><td class="dsc">移除所有注册到指定key上的回调。</td>
+	</table>
+	<a name="sublime_plugin"></a>
+	<h2>Module sublime_plugin</h2>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">(no methods)</td><td class="rtn"></td><td class="dsc"></td>
+	</table>
+	<a name="sublime_plugin.EventListener"></a>
+	<h2>Class sublime_plugin.EventListener</h2>
+	注意许多事件是由和视图相关的缓冲区触发的，因此方法只能调用一次，并且view做为它的第一个参数。
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">on_new(view)</td><td class="rtn">None</td><td class="dsc">当一个新缓冲区被创建时调用。</td>
+		<tr><td class="mth">on_clone(view)</td><td class="rtn">None</td><td class="dsc">当从一个已存视图克隆出新视图时调用。</td>
+		<tr><td class="mth">on_load(view)</td><td class="rtn">None</td><td class="dsc">当文件完成加载时调用。</td>
+		<tr><td class="mth">on_close(view)</td><td class="rtn">None</td><td class="dsc">当一个视图被关闭时调用(注意，同一个缓冲区中也许有其他的视图)。</td>
+		<tr><td class="mth">on_pre_save(view)</td><td class="rtn">None</td><td class="dsc">当一个视图即将保存时调用。</td>
+		<tr><td class="mth">on_post_save(view)</td><td class="rtn">None</td><td class="dsc">当一个视图被保存后调用。</td>
+		<tr><td class="mth">on_modified(view)</td><td class="rtn">None</td><td class="dsc">当更改被应用到视图时调用。</td>
+		<tr><td class="mth">on_selection_modified(view)</td><td class="rtn">None</td><td class="dsc">当一个视图里的选区被修改时调用。</td>
+		<tr><td class="mth">on_activated(view)</td><td class="rtn">None</td><td class="dsc">当一个视图获得焦点时调用。</td>
+		<tr><td class="mth">on_deactivated(view)</td><td class="rtn">None</td><td class="dsc">当一个视图失去焦点时调用。</td>
+		<tr><td class="mth">on_query_context(view, key, operator, operand, match_all)</td><td class="rtn">bool or None</td><td class="dsc">当给指定上下文绑定的键被触发时调用。如果插件知道如何响应上下文，应当返回结果True和False。如果不知道，返回None。
+				<p><tt>operator</tt> is one of:
+				<ul>
+					<li><tt>sublime.OP_EQUAL</tt>. Is the value of the context equal to the operand?
+					<li><tt>sublime.OP_NOT_EQUAL</tt>. Is the value of the context not equal to the operand?
+					<li><tt>sublime.OP_REGEX_MATCH</tt>. Does the value of the context match the regex given in operand?
+					<li><tt>sublime.OP_NOT_REGEX_MATCH</tt>. Does the value of the context not match the regex given in operand?
+					<li><tt>sublime.OP_REGEX_CONTAINS</tt>. Does the value of the context contain a substring matching the regex given in operand?
+					<li><tt>sublime.OP_NOT_REGEX_CONTAINS</tt>. Does the value of the context not contain a substring matching the regex given in operand?
+				</ul>
+				<p><tt>match_all</tt>应当在上下文涉及相关选区时使用：是每个选区必须匹配到(match_all = True)，或者至少一个选区有匹配(match_all = False)?
+			</td>
+	</table>
+	<a name="sublime_plugin.ApplicationCommand"></a>
+	<h2>Class sublime_plugin.ApplicationCommand</h2>
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">run(&lt;args&gt;)</td><td class="rtn">None</td><td class="dsc">当命令运行时调用。</td>
+		<tr><td class="mth">is_enabled(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令能够被运行时返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">is_visible(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令应该被显示在菜单中返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">description(&lt;args&gt;)</td><td class="rtn">String</td><td class="dsc">返回指定参数时命令的一段描述。在菜单中使用，如果没有标题，则返回默认描述。</td>
+	</table>
+	<a name="sublime_plugin.WindowCommand"></a>
+	<h2>Class sublime_plugin.WindowCommand</h2>
+	WindowCommands是每个视图的实例化。窗口对象可以通过<tt>self.window</tt>访问。
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">run(&lt;args&gt;)</td><td class="rtn">None</td><td class="dsc">当命令运行时调用。</td>
+		<tr><td class="mth">is_enabled(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令能够被运行时返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">is_visible(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令应该被显示在菜单中返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">description(&lt;args&gt;)</td><td class="rtn">String</td><td class="dsc">返回指定参数时命令的一段描述。在菜单中使用，如果没有标题，则返回默认描述。</td>
+	</table>
+	<a name="sublime_plugin.TextCommand"></a>
+	<h2>Class sublime_plugin.TextCommand</h2>
+	TextCommands是每个视图的实例化。视图对象可以通过<tt>self.view</tt>访问。
+	<table class="functions">
+		<tr><th>方法</th><th>返回值</th><th>描述</th></tr>
+		<tr><td class="mth">run(edit, &lt;args&gt;)</td><td class="rtn">None</td><td class="dsc">当命令运行时调用。</td>
+		<tr><td class="mth">is_enabled(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令能够被运行时返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">is_visible(&lt;args&gt;)</td><td class="rtn">bool</td><td class="dsc">此时如果命令应该被显示在菜单中返回true。默认实现总是返回True。</td>
+		<tr><td class="mth">description(&lt;args&gt;)</td><td class="rtn">String</td><td class="dsc">返回指定参数时命令的一段描述。在菜单中使用，撤销/重复描述。没有则返回默认描述。</td>
+	</table>
+</body>
+</html>

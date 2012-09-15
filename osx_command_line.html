@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>OS X 命令行/终端 - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>OS X 命令行</h1>
+		<h3>概述</h3>
+		<p>Sublime Text 2有着一个命令行工具，<tt>subl</tt>，来在命令行下处理文件。它可以用来打开Sublime Text 2中的文件和项目，也可以作为unix工具的<tt>编辑器</tt>比如git和subversion。
+		<h2>安装</h2>
+		<p>首要任务是建立一个symlink指向<tt>subl</tt>。假设你已经把Sublime Text 2放入Applications目录，并且你的path环境变量里有一个<tt>~/bin</tt>目录，你可以运行：
+		<pre class="code">
+ln -s "/Applications/Sublime Text 2.app/contents/SharedSupport/bin/subl" ~/bin/subl
+		</pre>
+		<h2>用途</h2>
+		运行<tt>subl --help</tt>，ps:mac系统下原生显示的界面不做翻译了，以免引起误会
+	<pre class="code">
+Usage: subl [arguments] [files]         edit the given files
+   or: subl [arguments] [directories]   open the given directories
+   or: subl [arguments] -               edit stdin
+
+Arguments:
+  --project &lt;project&gt;: Load the given project
+  --command &lt;command&gt;: Run the given command
+  -n or --new-window:  Open a new window
+  -a or --add:         Add folders to the current window
+  -w or --wait:        Wait for the files to be closed before returning
+  -b or --background:  Don't activate the application
+  -s or --stay:        Keep the application activated after closing the file
+  -h or --help:        Show help (this message) and exit
+  -v or --version:     Show version and exit
+
+--wait is implied if reading from stdin. Use --stay to not switch back
+to the terminal when a file is closed (only relevant if waiting for a file).
+
+Filenames may be given a :line or :line:column suffix to open at a specific
+location.
+	</pre>
+	<h2>编辑器</h2>
+	<p>要使用Sublime Text 2作为许多命令的输入提交编辑器，设置你的<tt>EDITOR</tt>环境变量：
+	<pre class="code">
+export EDITOR='subl -w'
+	</pre>
+	<p>指定 -w 将会使<tt>subl</tt>命令不会退出直到文件被关闭。
+	<h2>MacPorts</h2>
+	<p>如果你安装了MacPorts版本的Python，那么通过<tt>subl</tt>启动Sublime Text 2将不会正常工作。变通的办法，先从Finder中启动Sublime Text 2，然后通过它使用<tt>subl</tt>来交互。
+	</body>
+</html>

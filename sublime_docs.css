@@ -1,0 +1,83 @@
+body
+{
+    margin: 1em 5% 1em 5%;
+
+    font-family: 微软雅黑,'"lucida sans unicode"','"lucida grande"';
+}
+
+h1
+{
+    color: #2461AA;
+    border-bottom: 2px solid #C3D9FF
+}
+
+h2
+{
+    color: #2461AA;
+    font-size: 14pt;
+    margin: 0px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #C3D9FF
+}
+
+h3
+{
+    font-size: 12pt;
+    color: #2461AA;
+    margin: 0px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+ul
+{
+    list-style-type: square
+}
+
+.contents
+{
+    float: right
+}
+
+.key
+{
+    font-style: italic
+}
+
+.file
+{
+    font-family: monospace;
+}
+
+.setting
+{
+    font-family: monospace;
+}
+
+.command
+{
+    font-family: monospace;
+}
+
+.menu
+{
+    font-style: italic;
+}
+
+.settings
+{
+    border-spacing: 8px 8px;
+}
+
+.settings td
+{
+    vertical-align: top;
+    border-spacing: 8px 8px;
+}
+
+.code
+{
+    background-color: #d3e9ff;
+    border: 1px solid #C3D9FF;
+}

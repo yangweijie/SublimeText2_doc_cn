@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>自由模式（沉浸模式） - Sublime Text 2 文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>自由模式（沉浸模式）</h1>
+		<h3>概述</h3>
+		<p>自由模式（沉浸模式）全屏显示你的文件，你的显示器当中除了文本啥也没有。所有的UI chrome是隐藏的，但是可以访问。沉浸模式可以通过<span class="menu">View/Enter Distraction Free Mode</span>菜单项进入。
+		<p>当处于沉浸模式时，所有的UI chrome (侧边栏,迷你地图,状态栏,等)将被隐藏。你可以通过View菜单选择性的选择部分UI-你的配置将会在下次进入沉浸模式时生效。
+		<h2>定制化</h2>
+		<p>部分配置将会在进入沉浸模式时应用。这些默认的配置位于<span class="file">Packages/Default/Distraction Free.sublime-settings</span>)他们是:
+		<pre class="code">
+{
+	"line_numbers": false,
+	"gutter": false,
+	"draw_centered": true,
+	"wrap_width": 80,
+	"word_wrap": true,
+	"scroll_past_end": true
+}
+		</pre>
+		<p>你可以定制这些通过编辑<span class="file">Packages/User/Distraction Free.sublime-settings</span>，这可以通过<span class="menu">Preferences/File Settings - More</span> 菜单访问到。
+		<p>上面值得注意的是<span class="setting">wrap_width</span>设置。它的值80造成超过80字符时换行。你也许想把它设的高点，或者在窗口宽度是换行（设为0的时候）。
+	</body>
+</html>

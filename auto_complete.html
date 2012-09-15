@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>自动完成 - Sublime Text 2文档</title>
+		<link rel="stylesheet" type="text/css" href="sublime_docs.css">
+	</head>
+	<body>
+		<p class="contents"><a href="index.html">目录</a></p>
+		<h1>自动完成</h1>
+		<h3>概述</h3>
+		<p>当你键入完一个键时自动完成会显示可完成的列表，因此你可以只敲几个键完成一些个长的单词。 它在源码和html代码中是默认启用的(但只会在键入 &lt; 字符后起作用).
+		<h2>禁用自动完成</h2>
+		<p>通过<tt>auto_complete</tt>配置可以禁用自动完成。要禁用的话,把下面这行加入到 <tt>Preferences/File Settings - User</tt>:
+		<pre class="code">
+"auto_complete": false
+		</pre>
+		<p>在自动完成被禁用的情况下,可以手动显示完成层,或者tab直接插入完成中最靠前的那项而不显示完成列表。
+		<h2>手动显示完成</h2>
+		<p>按<tt>Ctrl+Space</tt>将会显示完成弹层如果他没被显示的话。如果正在显示,他将选择下一项。
+		<h2>使用tab来提交</h2>
+		<p>默认的，完成中的选中项目将在你键入回车时生效。这会造成完成标签和插入新的一行之间的歧义。同时设置 <tt>auto_complete_commit_on_tab</tt> 配置为true,回车只会插入新的一行，并且tab将会补全当前的自动完成。这还有其他的好处：因为Sublime Text知道这儿没有歧义，他可能显示更多相关完成的列表，并且极有可能把你想要的排在第一位。
+		<p>推荐启用用tab提交，但是这将话费你一点时间去习惯。
+	</body>
+</html>
