@@ -2,4 +2,4 @@
 =========================================
 
  SublimeText2_doc_cn
- [在线访问地址](http://saelabs.sinaapp.com/Sublime/)http://saelabs.sinaapp.com/Sublime/
+ [在线访问地址](http://baelabs.duapp.com/Sublime/)http://baelabs.duapp.com/Sublime/
